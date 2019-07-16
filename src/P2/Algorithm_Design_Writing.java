@@ -1,7 +1,11 @@
+package P2;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+
+//Created by: Alexander H. Agno II
+//ALGOCOM S18
 
 public class Algorithm_Design_Writing {
 	
@@ -18,7 +22,7 @@ public class Algorithm_Design_Writing {
 	private static final int N_COMBINATION_MAX = 20;
 	
 	
-	public static void analyze(String input) {
+	public static void analyze (String input) {
 		int inputSize = input.length();
 		HashMap<Character, Integer> charCountMap = new HashMap<Character, Integer>();
 		
@@ -93,9 +97,9 @@ public class Algorithm_Design_Writing {
 				
 				//perform swap
 				if(carriageNumbers[y] > carriageNumbers[y+1]) {
-					carriageNumbers[y] = carriageNumbers[y] + carriageNumbers[y+1]; 
-					carriageNumbers[y+1] = carriageNumbers[y] - carriageNumbers[y+1];
-					carriageNumbers[y] = carriageNumbers[y] - carriageNumbers[y+1];
+					int temp = carriageNumbers[y];
+					carriageNumbers[y] = carriageNumbers[y+1];
+					carriageNumbers[y+1] = temp;
 					optimalCount++;
 				}
 			}
