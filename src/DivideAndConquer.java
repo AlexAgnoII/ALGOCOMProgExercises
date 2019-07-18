@@ -1,6 +1,3 @@
-package P3;
-
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -181,19 +178,8 @@ public class DivideAndConquer {
 		
 		Collections.sort(pointX, Point.xComparator);
 		Collections.sort(pointY, Point.yComparator);
-	
-// print check.
-//		for(int i = 0; i < pointX.size(); i++) {
-//			System.out.print("(" + pointX.get(i).getX() + ", " + pointX.get(i).getY() + ") ");
-//		}
-//		System.out.println();
-//		
-//		for(int i = 0; i < pointY.size(); i++) {
-//			System.out.print("(" + pointY.get(i).getX() + ", " + pointY.get(i).getY() + ") ");
-//		}
-//		System.out.println();
 		
-		double distance = findClosestPair(pointX, pointY, P.length - 1);
+		double distance = findClosestPair(pointX, pointY,  P.length);
 		
 		System.out.println("Smallest distance: " + distance);
 	}
@@ -210,17 +196,24 @@ public class DivideAndConquer {
 		List<Point> PYL = new ArrayList<Point>();
 		List<Point> PYR = new ArrayList<Point>();
 		
+		//separate the points to PL and PR (sorted in Y)
 		for(int i = 0; i < size; i++) {
 			
 			if(pointY.get(i).getX() <= midPoint.getX()) 
 				PYL.add(pointY.get(i));
 			else 
-				PYR.add(pointY.get(i));
-
+				PYR.add(pointY.get(i));	
 		}
 		
-		double distanceLeft = findClosestPair(pointX, PYL, mid);
-		double distanceRight = findClosestPair(pointX, PYL, mid);
+		//shift point x so that it will access the other half of the points
+		List<Point> shiftedPointX = new ArrayList<Point>();
+		for(int i = 0; i < size - mid; i++) {
+			shiftedPointX.add(pointX.get(i + mid));
+		}
+		
+		//find closest pair of points on the left and right of the midpoint.
+		double distanceLeft = findClosestPair(pointX, PYL, mid);		
+		double distanceRight = findClosestPair(shiftedPointX, PYR, size - mid);
 		
 		//Find the smallest distance between the left and right.
 		double distance = Math.min(distanceLeft, distanceRight);
@@ -229,13 +222,13 @@ public class DivideAndConquer {
 		List<Point> rectangle = new ArrayList<Point>();
 		for(int i = 0; i < size; i++) {
 			
-			//If true, there's a case of Delta(SL,SR)
+			//If true, there's a special case of Delta(SL,SR)
 			if(Math.abs(pointY.get(i).getX() - midPoint.x) < distance) 
 				rectangle.add(pointY.get(i));
 			
 		}
 		
-		//
+		//Find the minimum between the smallest distance and the possible smallest distance on the special case.
 		return Math.min(distance, rectangleClosest(rectangle, distance));	
 	}
 	
