@@ -184,14 +184,12 @@ public class DivideAndConquer {
 //			System.out.print("(" + p.x + ", " +  p.y + ")");
 //		}
 		
-		double distance = findClosestPair(pointX, pointY,  P.length);
+		/*double distance*/ Pair p = findClosestPair(pointX, pointY,  P.length);
 		
-		System.out.println("Smallest Distance: " + distance);
+		System.out.println(p.getP1().getInputIndex() + " " + p.getP2().getInputIndex() + " " + p.getDistance());
 	}
 	
-	private static int[] minIndex = new int[2];
-	
-	private static double findClosestPair(List<Point> pointX, List<Point> pointY, int size) {
+	private static /*double*/ Pair findClosestPair(List<Point> pointX, List<Point> pointY, int size) {
 	
 		if(size <= 3) {
 			return doBruteForce(pointX, size);
@@ -229,39 +227,44 @@ public class DivideAndConquer {
 //		System.out.println();
 		
 		//find closest pair of points on the left and right of the midpoint.
-		double distanceLeft = findClosestPair(pointX, PYL, mid);
-		double distanceRight = findClosestPair(shiftedPointX, PYR, (size - mid - 1));
+		/*double distanceLeft*/ Pair smallPairLeft = findClosestPair(pointX, PYL, mid);
+		/*double distanceRight*/ Pair smallPairRight = findClosestPair(shiftedPointX, PYR, (size - mid - 1));
 		
 		//Find the smallest distance between the left and right.
-		double distance = Math.min(distanceLeft, distanceRight);
+		//double distance = Math.min(distanceLeft, distanceRight);
+		Pair smallestPair = smallPairLeft.getDistance() < smallPairRight.getDistance() ? smallPairLeft : smallPairRight;
 		
 		//Optimized combined step
 		List<Point> rectangle = new ArrayList<Point>();
 		for(int i = 0; i < size; i++) {
 			
 			//If true, there's a special case of Delta(SL,SR)
-			if(Math.abs(pointY.get(i).getX() - midPoint.x) < distance) 
+			if(Math.abs(pointY.get(i).getX() - midPoint.x) < smallestPair.getDistance()) 
 				rectangle.add(pointY.get(i));
 			
 		}
 		
 		//Find the minimum between the smallest distance and the possible smallest distance on the special case.
-		return Math.min(distance, rectangleClosest(rectangle, distance));	
+		//return Math.min(distance, rectangleClosest(rectangle, distance));	
+		Pair possiblePair = rectangleClosest(rectangle, smallestPair.getDistance());
+		return smallestPair.getDistance() < possiblePair.getDistance() ? smallestPair : possiblePair;
 	}
 	
-	private static double rectangleClosest(List<Point> rectangle, double distance) {
+	private static Pair rectangleClosest(List<Point> rectangle, double distance) {
 		
 		int size = rectangle.size();
 		double min = distance;
+		Pair p = new Pair(null, null, Double.MAX_VALUE);
 		
 		for(int i = 0 ; i < size; i++) {
 			for(int j = i + 1; j < size; j++) {
-				double smallestDistance = calculateDistance(rectangle.get(j), rectangle.get(i));
+				double smallestDistance = calculateDistance(rectangle.get(i), rectangle.get(j));
 				
 				if(smallestDistance < min) {
 					min = smallestDistance;
-					minIndex[0] = rectangle.get(i).getInputIndex();
-					minIndex[1] = rectangle.get(j).getInputIndex();
+					p.setDistance(min);
+					p.setP1(rectangle.get(i));
+					p.setP2(rectangle.get(j));
 				}
 				
 				if(rectangle.get(j).getY() - rectangle.get(i).getY() < min)
@@ -269,25 +272,26 @@ public class DivideAndConquer {
 			}
 		}
 		
-		return min;
+		return p;
 	}
 	
-	private static double doBruteForce(List<Point> pointX, int size) {
+	private static Pair doBruteForce(List<Point> pointX, int size) {
 		
 		double min = Double.MAX_VALUE;
+		Pair p = new Pair(null, null, Double.MAX_VALUE);
 		for(int i = 0; i < size; i++) {
 			for(int j = i+1; j < size; j++) {
 				double smallestDistance = calculateDistance(pointX.get(i), pointX.get(j));
 				if(smallestDistance < min) {
 					min = smallestDistance;
-					minIndex[0] = pointX.get(i).getInputIndex();
-					minIndex[1] = pointX.get(j).getInputIndex();
-					
+					p.setDistance(min);
+					p.setP1(pointX.get(i));
+					p.setP2(pointX.get(j));
 				}
 			}
 		}
 		
- 		return min;
+ 		return p;
 	}
 	
 	//Euclidean Distance formula
@@ -332,6 +336,10 @@ public class DivideAndConquer {
 			this.p1 = p1;
 			this.p2 = p2;
 			this.distance = distance;	
+		}
+
+		public Pair() {
+			// TODO Auto-generated constructor stub
 		}
 
 		public Point getP1() {

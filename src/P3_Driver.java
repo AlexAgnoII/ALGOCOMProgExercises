@@ -93,14 +93,13 @@ public class P3_Driver {
 		points[9].y = 512;
 		
 		points[9] = new DivideAndConquer.Pt();
-		points[9].x = 100;
+		points[9].x = 5;
 		points[9].y = 100;
 		
 
 	
 		
 		DivideAndConquer.closestPair(points);
-
 	}
 
 }
