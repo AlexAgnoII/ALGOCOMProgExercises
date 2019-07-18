@@ -1,5 +1,6 @@
 package P3;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -180,16 +181,104 @@ public class DivideAndConquer {
 		
 		Collections.sort(pointX, Point.xComparator);
 		Collections.sort(pointY, Point.yComparator);
+	
+// print check.
+//		for(int i = 0; i < pointX.size(); i++) {
+//			System.out.print("(" + pointX.get(i).getX() + ", " + pointX.get(i).getY() + ") ");
+//		}
+//		System.out.println();
+//		
+//		for(int i = 0; i < pointY.size(); i++) {
+//			System.out.print("(" + pointY.get(i).getX() + ", " + pointY.get(i).getY() + ") ");
+//		}
+//		System.out.println();
 		
-		for(int i = 0; i < pointX.size(); i++) {
-			System.out.print("(" + pointX.get(i).getX() + ", " + pointX.get(i).getY() + ") ");
-		}
-		System.out.println();
+		double distance = findClosestPair(pointX, pointY, P.length - 1);
 		
-		for(int i = 0; i < pointY.size(); i++) {
-			System.out.print("(" + pointY.get(i).getX() + ", " + pointY.get(i).getY() + ") ");
+		System.out.println("Smallest distance: " + distance);
+	}
+	
+	private static double findClosestPair(List<Point> pointX, List<Point> pointY, int size) {
+		
+		if(size <= 3) {
+			return doBruteForce(pointX, size);
 		}
-		System.out.println();
+		
+		int mid = size / 2;
+		Point midPoint = pointX.get(mid);
+		
+		List<Point> PYL = new ArrayList<Point>();
+		List<Point> PYR = new ArrayList<Point>();
+		
+		for(int i = 0; i < size; i++) {
+			
+			if(pointY.get(i).getX() <= midPoint.getX()) 
+				PYL.add(pointY.get(i));
+			else 
+				PYR.add(pointY.get(i));
+
+		}
+		
+		double distanceLeft = findClosestPair(pointX, PYL, mid);
+		double distanceRight = findClosestPair(pointX, PYL, mid);
+		
+		//Find the smallest distance between the left and right.
+		double distance = Math.min(distanceLeft, distanceRight);
+		
+		//Optimized combined step
+		List<Point> rectangle = new ArrayList<Point>();
+		for(int i = 0; i < size; i++) {
+			
+			//If true, there's a case of Delta(SL,SR)
+			if(Math.abs(pointY.get(i).getX() - midPoint.x) < distance) 
+				rectangle.add(pointY.get(i));
+			
+		}
+		
+		//
+		return Math.min(distance, rectangleClosest(rectangle, distance));	
+	}
+	
+	private static double rectangleClosest(List<Point> rectangle, double distance) {
+		
+		int size = rectangle.size();
+		double min = distance;
+		
+		for(int i = 0 ; i < size; i++) {
+			for(int j = i + 1; j < size; j++) {
+				double smallestDistance = calculateDistance(rectangle.get(j), rectangle.get(i));
+				
+				if(smallestDistance < min) {
+					min = smallestDistance;
+				}
+				
+				if(rectangle.get(j).getY() - rectangle.get(i).getY() < min)
+					break;
+			}
+		}
+		
+		return min;
+	}
+	
+	private static double doBruteForce(List<Point> pointX, int size) {
+		
+		double min = Double.MAX_VALUE;
+		for(int i = 0; i < size; i++) {
+			for(int j = i+1; j < size; j++) {
+				double smallestDistance = calculateDistance(pointX.get(i), pointX.get(j));
+				if(smallestDistance < min) {
+					min = smallestDistance;
+				}
+			}
+		}
+		
+ 		return min;
+	}
+	
+	//Euclidean Distance formula
+	private static double calculateDistance(Point p1, Point p2) {
+		return Math.sqrt((p1.getX() - p2.getX()) * (p1.getX() - p2.getX()) +
+				         (p1.getY() - p2.getY()) * (p1.getY() - p2.getY()));
 	}
 	
 	private static class SkylinePoint {
