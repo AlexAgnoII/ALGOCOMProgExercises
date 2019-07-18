@@ -184,12 +184,12 @@ public class DivideAndConquer {
 //			System.out.print("(" + p.x + ", " +  p.y + ")");
 //		}
 		
-		/*double distance*/ Pair p = findClosestPair(pointX, pointY,  P.length);
+		Pair p = findClosestPair(pointX, pointY,  P.length);
 		
 		System.out.println(p.getP1().getInputIndex() + " " + p.getP2().getInputIndex() + " " + p.getDistance());
 	}
 	
-	private static /*double*/ Pair findClosestPair(List<Point> pointX, List<Point> pointY, int size) {
+	private static Pair findClosestPair(List<Point> pointX, List<Point> pointY, int size) {
 	
 		if(size <= 3) {
 			return doBruteForce(pointX, size);
@@ -227,11 +227,10 @@ public class DivideAndConquer {
 //		System.out.println();
 		
 		//find closest pair of points on the left and right of the midpoint.
-		/*double distanceLeft*/ Pair smallPairLeft = findClosestPair(pointX, PYL, mid);
-		/*double distanceRight*/ Pair smallPairRight = findClosestPair(shiftedPointX, PYR, (size - mid - 1));
+		Pair smallPairLeft = findClosestPair(pointX, PYL, mid);
+		Pair smallPairRight = findClosestPair(shiftedPointX, PYR, (size - mid - 1));
 		
 		//Find the smallest distance between the left and right.
-		//double distance = Math.min(distanceLeft, distanceRight);
 		Pair smallestPair = smallPairLeft.getDistance() < smallPairRight.getDistance() ? smallPairLeft : smallPairRight;
 		
 		//Optimized combined step
@@ -245,7 +244,6 @@ public class DivideAndConquer {
 		}
 		
 		//Find the minimum between the smallest distance and the possible smallest distance on the special case.
-		//return Math.min(distance, rectangleClosest(rectangle, distance));	
 		Pair possiblePair = rectangleClosest(rectangle, smallestPair.getDistance());
 		return smallestPair.getDistance() < possiblePair.getDistance() ? smallestPair : possiblePair;
 	}
