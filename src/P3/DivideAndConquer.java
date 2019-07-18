@@ -1,6 +1,8 @@
 package P3;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class DivideAndConquer {
@@ -20,7 +22,8 @@ public class DivideAndConquer {
 		
 		List<SkylinePoint> skyLinePointList = new ArrayList<SkylinePoint>();
 		if(lhs < rhs) {
-			int mid = (lhs + rhs) / 2;
+			//int mid = (lhs + rhs) / 2;
+			int mid = lhs + ((rhs - lhs) / 2);
 			List<SkylinePoint> leftSkylinePointList = getSkylines(B, lhs, mid);
 			List<SkylinePoint> rightSkylinePointList = getSkylines(B, mid + 1, rhs);
 			return mergeSkylines(leftSkylinePointList, rightSkylinePointList);
@@ -163,7 +166,30 @@ public class DivideAndConquer {
 	}
 	
 	public static void closestPair (Pt[] P) {
-		   //put your code here and the print statements for the output.
+		   
+		List<Point> pointX = new ArrayList<Point>(); //Points sorted in x.
+		List<Point> pointY = new ArrayList<Point>(); //Points sorted in y.
+		
+		for(int i = 0; i < P.length; i++) {
+			Point p = new Point();
+			p.setX(P[i].x);
+			p.setY(P[i].y);
+			pointX.add(p);
+			pointY.add(p);
+		}
+		
+		Collections.sort(pointX, Point.xComparator);
+		Collections.sort(pointY, Point.yComparator);
+		
+		for(int i = 0; i < pointX.size(); i++) {
+			System.out.print("(" + pointX.get(i).getX() + ", " + pointX.get(i).getY() + ") ");
+		}
+		System.out.println();
+		
+		for(int i = 0; i < pointY.size(); i++) {
+			System.out.print("(" + pointY.get(i).getX() + ", " + pointY.get(i).getY() + ") ");
+		}
+		System.out.println();
 	}
 	
 	private static class SkylinePoint {
@@ -192,4 +218,42 @@ public class DivideAndConquer {
 		  public int x;  //X-coordinate
 		  public int y; // Y-coordinate
 	}
+	
+	private static class Point {
+		
+		private int x;
+		private int y;
+
+		public static Comparator<Point> xComparator = new Comparator<Point>() {
+			@Override
+			public int compare(Point p1, Point p2) {
+				// TODO Auto-generated method stub
+				return (p1.getX() < p2.getX() ? -1 : (p1.getX() == p2.getX() ? 0 : 1));
+			}
+		};
+		
+		public static Comparator<Point> yComparator = new Comparator<Point>() {
+			@Override
+			public int compare(Point p1, Point p2) {
+				return (p1.getY() < p2.getY() ? -1 : (p1.getY() == p2.getY() ? 0 : 1));
+			}
+		};
+		
+		public int getX() {
+			return this.x;
+		}
+		
+		public int getY() {
+			return this.y;
+		}
+		
+		public void setX(int x) {
+			this.x = x;
+		}
+		
+		public void setY(int y) {
+			this.y = y;
+		}
+	}
+
 }
