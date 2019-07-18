@@ -172,6 +172,7 @@ public class DivideAndConquer {
 			Point p = new Point();
 			p.setX(P[i].x);
 			p.setY(P[i].y);
+			p.setInputIndex(i);
 			pointX.add(p);
 			pointY.add(p);
 		}
@@ -179,12 +180,19 @@ public class DivideAndConquer {
 		Collections.sort(pointX, Point.xComparator);
 		Collections.sort(pointY, Point.yComparator);
 		
+//		for(Point p : pointX) {
+//			System.out.print("(" + p.x + ", " +  p.y + ")");
+//		}
+		
 		double distance = findClosestPair(pointX, pointY,  P.length);
 		
 		System.out.println("Smallest distance: " + distance);
 	}
 	
+	private static Point[] minPoint = new Point[2];
+	
 	private static double findClosestPair(List<Point> pointX, List<Point> pointY, int size) {
+
 		
 		if(size <= 3) {
 			return doBruteForce(pointX, size);
@@ -192,6 +200,12 @@ public class DivideAndConquer {
 		
 		int mid = size / 2;
 		Point midPoint = pointX.get(mid);
+		
+		System.out.println("size: " + size);
+		System.out.println("pointX size:  " + pointX.size());
+		System.out.println("pointY size: " + pointY.size());
+		System.out.println("Mid: " + mid);
+		
 		
 		List<Point> PYL = new ArrayList<Point>();
 		List<Point> PYR = new ArrayList<Point>();
@@ -207,13 +221,17 @@ public class DivideAndConquer {
 		
 		//shift point x so that it will access the other half of the points
 		List<Point> shiftedPointX = new ArrayList<Point>();
-		for(int i = 0; i < size - mid; i++) {
-			shiftedPointX.add(pointX.get(i + mid));
+		for(int i = 0; i < size - mid - 1; i++) {
+			shiftedPointX.add(pointX.get(i + mid + 1));
 		}
 		
+		System.out.println("PYL: " + PYL.size());
+		System.out.println("PYR: " + PYR.size());
+		System.out.println();
+		
 		//find closest pair of points on the left and right of the midpoint.
-		double distanceLeft = findClosestPair(pointX, PYL, mid);		
-		double distanceRight = findClosestPair(shiftedPointX, PYR, size - mid);
+		double distanceLeft = findClosestPair(pointX, PYL, mid + 1);
+		double distanceRight = findClosestPair(shiftedPointX, PYR, (size - mid - 1));
 		
 		//Find the smallest distance between the left and right.
 		double distance = Math.min(distanceLeft, distanceRight);
@@ -305,6 +323,7 @@ public class DivideAndConquer {
 		
 		private int x;
 		private int y;
+		private int inputIndex;
 
 		public static Comparator<Point> xComparator = new Comparator<Point>() {
 			@Override
@@ -335,6 +354,14 @@ public class DivideAndConquer {
 		
 		public void setY(int y) {
 			this.y = y;
+		}
+		
+		public void setInputIndex(int inputIndex) {
+			this.inputIndex = inputIndex;
+		}
+		
+		public int getInputIndex() {
+			return this.inputIndex;
 		}
 	}
 

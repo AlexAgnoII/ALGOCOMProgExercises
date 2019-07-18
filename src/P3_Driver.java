@@ -51,14 +51,45 @@ public class P3_Driver {
 //		int[] A = {17, 12, 20, 16, 15, 7, 9, 8, 10, 13, 3, 11, 1, 19, 18, 5, 4, 6, 2, 1410, 13, 3, 11, 1, 19, 18,17, 12, 20 };
 //		DivideAndConquer.mergesort(A);
 		
-		DivideAndConquer.Pt[] points = new DivideAndConquer.Pt[2];
+		DivideAndConquer.Pt[] points = new DivideAndConquer.Pt[9];
 		points[0] = new DivideAndConquer.Pt();
-		points[0].x = 2;
-		points[0].y = 3;
+		points[0].x = 0;
+		points[0].y = 0;
 		
 		points[1] = new DivideAndConquer.Pt();
-		points[1].x = 10;
-		points[1].y = 2;
+		points[1].x = 0;
+		points[1].y = 1;
+		
+		points[2] = new DivideAndConquer.Pt();
+		points[2].x = 100;
+		points[2].y = 45;
+		
+		points[3] = new DivideAndConquer.Pt();
+		points[3].x = 2;
+		points[3].y = 3;
+		
+		points[4] = new DivideAndConquer.Pt();
+		points[4].x = 8;
+		points[4].y = 17;
+		
+		points[5] = new DivideAndConquer.Pt();
+		points[5].x = 21;
+		points[5].y = 104;
+		
+		points[6] = new DivideAndConquer.Pt();
+		points[6].x = 0;
+		points[6].y = 20;
+		
+		points[7] = new DivideAndConquer.Pt();
+		points[7].x = 99;
+		points[7].y = 70;
+		
+		points[8] = new DivideAndConquer.Pt();
+		points[8].x = 4;
+		points[8].y = 1;
+		
+		
+
 		
 		
 		DivideAndConquer.closestPair(points);
