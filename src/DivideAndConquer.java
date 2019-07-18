@@ -186,14 +186,13 @@ public class DivideAndConquer {
 		
 		double distance = findClosestPair(pointX, pointY,  P.length);
 		
-		System.out.println("Smallest distance: " + distance);
+		System.out.println("Smallest Distance: " + distance);
 	}
 	
-	private static Point[] minPoint = new Point[2];
+	private static int[] minIndex = new int[2];
 	
 	private static double findClosestPair(List<Point> pointX, List<Point> pointY, int size) {
-
-		
+	
 		if(size <= 3) {
 			return doBruteForce(pointX, size);
 		}
@@ -201,10 +200,10 @@ public class DivideAndConquer {
 		int mid = size / 2;
 		Point midPoint = pointX.get(mid);
 		
-		System.out.println("size: " + size);
-		System.out.println("pointX size:  " + pointX.size());
-		System.out.println("pointY size: " + pointY.size());
-		System.out.println("Mid: " + mid);
+//		System.out.println("size: " + size);
+//		System.out.println("pointX size:  " + pointX.size());
+//		System.out.println("pointY size: " + pointY.size());
+//		System.out.println("Mid: " + mid);
 		
 		
 		List<Point> PYL = new ArrayList<Point>();
@@ -213,9 +212,9 @@ public class DivideAndConquer {
 		//separate the points to PL and PR (sorted in Y)
 		for(int i = 0; i < size; i++) {
 			
-			if(pointY.get(i).getX() <= midPoint.getX()) 
+			if(i < mid) 
 				PYL.add(pointY.get(i));
-			else 
+			else if(i > mid)
 				PYR.add(pointY.get(i));	
 		}
 		
@@ -225,12 +224,12 @@ public class DivideAndConquer {
 			shiftedPointX.add(pointX.get(i + mid + 1));
 		}
 		
-		System.out.println("PYL: " + PYL.size());
-		System.out.println("PYR: " + PYR.size());
-		System.out.println();
+//		System.out.println("PYL: " + PYL.size());
+//		System.out.println("PYR: " + PYR.size());
+//		System.out.println();
 		
 		//find closest pair of points on the left and right of the midpoint.
-		double distanceLeft = findClosestPair(pointX, PYL, mid + 1);
+		double distanceLeft = findClosestPair(pointX, PYL, mid);
 		double distanceRight = findClosestPair(shiftedPointX, PYR, (size - mid - 1));
 		
 		//Find the smallest distance between the left and right.
@@ -261,6 +260,8 @@ public class DivideAndConquer {
 				
 				if(smallestDistance < min) {
 					min = smallestDistance;
+					minIndex[0] = rectangle.get(i).getInputIndex();
+					minIndex[1] = rectangle.get(j).getInputIndex();
 				}
 				
 				if(rectangle.get(j).getY() - rectangle.get(i).getY() < min)
@@ -279,6 +280,9 @@ public class DivideAndConquer {
 				double smallestDistance = calculateDistance(pointX.get(i), pointX.get(j));
 				if(smallestDistance < min) {
 					min = smallestDistance;
+					minIndex[0] = pointX.get(i).getInputIndex();
+					minIndex[1] = pointX.get(j).getInputIndex();
+					
 				}
 			}
 		}
