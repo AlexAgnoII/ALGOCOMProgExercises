@@ -38,14 +38,11 @@ public class GreedyAlgorithms {
 		Collections.sort(tableList, Table.capacityComparator);
 		
 		for (Team team : teamList) {
-//			System.out.println(team.getName());
 			
 			if(team.getSize() <= tableList.size()) {
 				
 				int index = 0;
-				while(team.getSize() > 0 && 
-					  index < tableList.size() &&
-					  possible == 1) {
+				while(team.getSize() > 0 && index < tableList.size()) {
 					
 					Table table = tableList.get(index);
 					
@@ -54,16 +51,9 @@ public class GreedyAlgorithms {
 						team.setSize(team.getSize() - 1);
 						table.setCapacity(table.getCapacity() - 1);
 					}
-					else {
-						possible = 0;
-					}
 					
 					index++;
 				}
-				
-				//not possible anymore since not all students were able to sit.
-				if(possible == 0)
-					break;
 			}
 			
 			//not possible anymore since the number of tables is less the number of student in a team.
