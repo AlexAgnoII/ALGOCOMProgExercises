@@ -100,9 +100,25 @@ public class GreedyAlgorithms {
 	}
 	
 	public static void shoemaker(int[] jobTime, int[] fine) {
-		  //your print statements here 
+		  List<Job> jobList = new ArrayList<Job>();
+		  
+		  for(int i = 0; i < jobTime.length; i++) {
+			  jobList.add(new Job(jobTime[i], fine[i], i+1));
+		  }
+		  
+//		  //test
+//		  for(Job j : jobList) {
+//			  j.printContents();
+//			  System.out.println();
+//		  }
+		  
+		  Collections.sort(jobList, Job.ratioComparator);
+		  
+		  for(Job j : jobList) {
+			  System.out.print(j.getName() + " ");
+		  }
+		  System.out.println();
 	}
-
 
 	public static void design(int[] floors) {
 		  //your print statements here 
@@ -148,6 +164,54 @@ public class GreedyAlgorithms {
 				return (t2.getCapacity() < t1.getCapacity() ? -1 : (t2.getCapacity() == t1.getCapacity() ? 0 : 1));
 			}
 		};
+	}
+	
+	private static class Job {
+		private int name;
+		private int time;
+		private int fine;
+		private double ratio;
+		
+		public Job(int time, int fine, int name) {
+			this.time = time;
+			this.fine = fine;
+			this.name = name;
+			this.ratio = (double) fine / time;
+		}
+		
+		public int getName() {
+			return this.name;
+		}
+		
+		public int getTime() {
+			return time;
+		}
+		public void setTime(int time) {
+			this.time = time;
+		}
+		public int getFine() {
+			return fine;
+		}
+		public void setFine(int fine) {
+			this.fine = fine;
+		}
+		public double getRatio() {
+			return ratio;
+		}
+		
+		public static Comparator<Job> ratioComparator = new Comparator<Job>() {
+			@Override
+			public int compare(Job j1, Job j2) {
+				// TODO Auto-generated method stub
+				return (j2.getRatio() < j1.getRatio() ? -1 : (j2.getRatio() == j1.getRatio() ? 0 : 1));
+			}
+		};
+		
+		public void printContents() {
+			System.out.println("Time: " + this.time + " days.");
+			System.out.println("Fine: " + this.fine + " cents.");
+			System.out.println("Ratio: " + this.ratio);
+		}
 	}
 	
 	private static class Team {
