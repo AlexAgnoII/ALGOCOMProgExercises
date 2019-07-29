@@ -1,8 +1,11 @@
+package P3;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+//Name: Alexander H. Agno II
+//Secion: ALGOCOM S18
 public class DivideAndConquer {
 	
 	public static void skyline (Building[] B) {
@@ -20,8 +23,7 @@ public class DivideAndConquer {
 		
 		List<SkylinePoint> skyLinePointList = new ArrayList<SkylinePoint>();
 		if(lhs < rhs) {
-			//int mid = (lhs + rhs) / 2;
-			int mid = lhs + ((rhs - lhs) / 2);
+			int mid = (lhs + rhs) / 2;
 			List<SkylinePoint> leftSkylinePointList = getSkylines(B, lhs, mid);
 			List<SkylinePoint> rightSkylinePointList = getSkylines(B, mid + 1, rhs);
 			return mergeSkylines(leftSkylinePointList, rightSkylinePointList);
@@ -185,8 +187,22 @@ public class DivideAndConquer {
 //		}
 		
 		Pair p = findClosestPair(pointX, pointY,  P.length);
+
+		int index_lower;
+		int index_higher;
 		
-		System.out.println(p.getP1().getInputIndex() + " " + p.getP2().getInputIndex() + " " + p.getDistance());
+		if(p.getP1().getInputIndex() < p.getP2().getInputIndex()) {
+			index_lower = p.getP1().getInputIndex();
+			index_higher = p.getP2().getInputIndex();
+		}
+		else {
+			index_lower = p.getP2().getInputIndex();
+			index_higher = p.getP1().getInputIndex();
+		}
+		
+		System.out.printf("%d %d %f \n", index_lower, 
+				                         index_higher, 
+				                         p.getDistance());
 	}
 	
 	private static Pair findClosestPair(List<Point> pointX, List<Point> pointY, int size) {
