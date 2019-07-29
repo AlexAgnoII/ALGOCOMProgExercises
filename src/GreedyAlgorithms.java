@@ -121,9 +121,72 @@ public class GreedyAlgorithms {
 	}
 
 	public static void design(int[] floors) {
-		  //your print statements here 
+		  List<Integer> negFloors = new ArrayList<Integer>();
+		  List<Integer> posFloors = new ArrayList<Integer>();
+		  
+		  for(int floor : floors) {
+			  if(floor > 0) 
+				  posFloors.add(floor);
+			 
+			  else 
+				  negFloors.add(floor);
+		  }
+		  
+		  Collections.sort(posFloors, Collections.reverseOrder());
+		  Collections.sort(negFloors);
+		  
+		  System.out.println(posFloors);
+		  System.out.println(negFloors);
+		  
+		  //Positive floor has the MAX value.
+		  if(posFloors.get(0) > Math.abs(negFloors.get(0)))
+			  buildDesign(posFloors, negFloors);
+		  else
+			  buildDesign(negFloors, posFloors);
+			  
+		 
 	}
 	
+	private static void buildDesign(List<Integer> firstList, List<Integer> secondList) {
+		
+		List<Integer> building = new ArrayList<Integer>();
+		
+		building.add(firstList.get(0));
+		int min = Math.abs(firstList.get(0));
+		
+		boolean flag = true; //true = first, false == second.
+		int i = 0; //first list index
+		int j = 0; //second list index
+		
+		while(i < firstList.size() && j < secondList.size()) {
+			
+			if(flag) {
+				
+				if(min > Math.abs(secondList.get(j))) {
+					min = Math.abs(secondList.get(j));
+					building.add(secondList.get(j));
+					flag = !flag;
+					i++;
+				}
+				
+				else j++;
+			}
+			
+			else {
+				
+				if(min > Math.abs(firstList.get(i))) {
+					min = Math.abs(firstList.get(i));
+					building.add(firstList.get(i));
+					flag = !flag;
+					j++;
+				}
+				
+				else i++;
+			}
+		}
+		System.out.println(building);
+		System.out.println(building.size());
+	}
 	
 	private static class Table {
 		private int name;
