@@ -1,8 +1,13 @@
+package P4;
 import java.util.ArrayList;
+
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+//Alexander H. Agno II
+//Section: S18
 public class GreedyAlgorithms {
 	
 	//0 = num of team(1st) and num of tables(2nd)
@@ -135,8 +140,8 @@ public class GreedyAlgorithms {
 		  Collections.sort(posFloors, Collections.reverseOrder());
 		  Collections.sort(negFloors);
 		  
-		  System.out.println(posFloors);
-		  System.out.println(negFloors);
+//		  System.out.println(posFloors);
+//		  System.out.println(negFloors);
 		  
 		  //Positive floor has the MAX value.
 		  if(posFloors.get(0) > Math.abs(negFloors.get(0)))
@@ -184,7 +189,7 @@ public class GreedyAlgorithms {
 				else i++;
 			}
 		}
-		System.out.println(building);
+		//System.out.println(building);
 		System.out.println(building.size());
 	}
 	
