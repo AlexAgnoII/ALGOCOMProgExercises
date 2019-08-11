@@ -45,9 +45,10 @@ public class DynamicProgramming {
 		}
 	}
 
+
 	private static int[][] matrixChainMultiplication(List<Integer> matrixDimList, int n) {
 		
-		int[][] tableM = new int[n][n]; //Table that will keep track of the minimum.
+		int[][] tableM = new int[n][n]; //Table that will keep track of the minimum for DP.
 		int[][] tableS = new int[n][n]; //Table that will tell us what is the order.
 		
 		//If one matrix, it means there are no multiplication cost.
@@ -85,16 +86,101 @@ public class DynamicProgramming {
 		return tableS;
 	}
 
+	//Budget <= 500
+	//Party <= 100
 	public static void partyBudget(String[] inputs) {
+		List<Party> partyList = new ArrayList<Party>();
+		int[][] partyFun; //table to store party fun maximum for DP.
+		int budget;
+		int numParties;
 		
+		//parse
+		String[] temp = inputs[0].split(" ");
+		budget = Integer.parseInt(temp[0]);
+		numParties = Integer.parseInt(temp[1]);
+		
+		for(int i = 1; i < inputs.length; i++) {
+			temp = inputs[i].split(" ");
+			partyList.add(new Party(Integer.parseInt(temp[0]), Integer.parseInt(temp[1])));
+		}
+		
+		int row = numParties+1,
+		    col = budget + 1;
+		partyFun = new int[row][col];
+		
+		for(int i = 0; i < row; i++) {
+			for(int j = 0; j < col; j++) {
+				partyFun[i][j] = 0;
+			}
+		}
+		
+		//start at 1 since when there is 0 weight and 0 items, there's 0 values.
+		for(int i = 1; i < row; i++) {
+			for(int w = 1; w < col; w++) {
+				
+				int otherWeight = w - partyList.get(i-1).getEntranceFee();
+				if(otherWeight < 0) {
+					partyFun[i][w] = partyFun[i-1][w];
+				}
+				else {
+					//partyFun[i][w] = Math.max(partyFun[i-1][w], partyFun[i-1][otherWeight] + partyList.get(i-1).getFun());
+					if(partyFun[i-1][w] > partyFun[i-1][otherWeight] + partyList.get(i-1).getFun()) {
+						partyFun[i][w] = partyFun[i-1][w];
+					}
+					else {
+						partyFun[i][w] = partyFun[i-1][otherWeight] + partyList.get(i-1).getFun();
+					}
+				}
+			}
+		}
+
+		int maxFun = partyFun[row-1][col-1];
+		int budgetSpent = backTrackPartyFun(row-1, col-1, maxFun, partyFun, partyList);
+		System.out.println(budgetSpent + " " + maxFun);
 		
 	}
 	
-	private static int[][] costTable;
-
+	private static int backTrackPartyFun(int row, int col, int maxFun, int[][] partyFun, List<Party> partyList) {
+		int budgetSpent = 0;
+		int w  = col;	
+		
+		for(int i = row; i > 0; i--) {
+			
+			if(maxFun > 0) {
+				if (partyFun[i-1][w] != maxFun) {
+					budgetSpent += partyList.get(i - 1).getEntranceFee();
+					maxFun = maxFun - partyList.get(i - 1).getFun(); 
+					w = w - partyList.get(i - 1).getEntranceFee();
+				}
+			}
+			else break; //stop when the maxFun has been exhausted
+		}
+		
+		return budgetSpent;
+	}
+	
+	private static class Party {
+		private int entranceFee; //5 - 25
+		private int fun; //0 - 10
+		
+		public Party(int entranceFee, int fun) {
+		    this.entranceFee = entranceFee;
+		    this.fun = fun;
+		}
+		
+		public int getEntranceFee() {
+			return entranceFee;
+		}
+		
+		public int getFun() {
+			return fun;
+		}
+	}
+	
 	public static void cut (int l, int cuts, int[] places) {
 		int modifiedCuts = cuts + 2;
 		int[] modifiedPlaces = new int[modifiedCuts]; 
+		int[][] costTable; //table used to store the maximum costs for DP.
 
 		//create modified places (added 0 at first elem, and l in the last elem)
 		for(int i = 0; i < modifiedPlaces.length; i++) {

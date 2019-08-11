@@ -18,7 +18,10 @@ public class P5_Driver {
 //		DynamicProgramming.cut(29, cuts.length, cuts);
 		
 		
-
+	    //String[] s = {"50 10", "12 3", "15 8", "16 9", "16 6", "10 2", "21 9", "18 4", "12 4", "17 8", "18 9"};
+		//String[] s = {"8 4", "2 1", "3 2", "4 5", "5 6"};
+		//String[] s ={"7 4", "1 1", "3 4", "4 5", "5 7"};
+		//DynamicProgramming.partyBudget(s);
 	}
 
 }
