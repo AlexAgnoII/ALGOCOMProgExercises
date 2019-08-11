@@ -11,8 +11,14 @@ public class P5_Driver {
 	}
 	
 	public void Tests() {
-		String[] s = {"A 4 10", "B 10 3", "C 3 12", "D 12 20", "E 20 7"};
-		DynamicProgramming.assignTable(s);
+//		String[] s = {"A 4 10", "B 10 3", "C 3 12", "D 12 20", "E 20 7"};
+//		DynamicProgramming.assignTable(s);
+		
+//		int[] cuts = {4,14,19, 27};
+//		DynamicProgramming.cut(29, cuts.length, cuts);
+		
+		
+
 	}
 
 }
