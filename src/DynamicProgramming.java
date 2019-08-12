@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 //Alexander H. Agno II
@@ -8,12 +7,13 @@ public class DynamicProgramming {
 	
 	public static void assignTable(String[] input) {
         List<Integer> matrixDimList = new ArrayList<Integer>();
-        String[] matrixName = new String[input.length];
+        int numMatrix = Integer.parseInt(input[0]);
+        String[] matrixName = new String[numMatrix];
         int[][] tableForPrinting;
         
         //Parse into list of dimensions (correct order, duplicates are combined)
-        for(int i = 0; i < input.length; i++) {
-        	String[] inputSplitted = input[i].split(" ");
+        for(int i = 0; i < numMatrix; i++) {
+        	String[] inputSplitted = input[i+1].split(" ");
         	matrixName[i] = inputSplitted[0];
         	
         	if(i == 0) 
@@ -99,8 +99,8 @@ public class DynamicProgramming {
 		budget = Integer.parseInt(temp[0]);
 		numParties = Integer.parseInt(temp[1]);
 		
-		for(int i = 1; i < inputs.length; i++) {
-			temp = inputs[i].split(" ");
+		for(int i = 0; i < numParties; i++) {
+			temp = inputs[i+1].split(" ");
 			partyList.add(new Party(Integer.parseInt(temp[0]), Integer.parseInt(temp[1])));
 		}
 		
@@ -123,13 +123,7 @@ public class DynamicProgramming {
 					partyFun[i][w] = partyFun[i-1][w];
 				}
 				else {
-					//partyFun[i][w] = Math.max(partyFun[i-1][w], partyFun[i-1][otherWeight] + partyList.get(i-1).getFun());
-					if(partyFun[i-1][w] > partyFun[i-1][otherWeight] + partyList.get(i-1).getFun()) {
-						partyFun[i][w] = partyFun[i-1][w];
-					}
-					else {
-						partyFun[i][w] = partyFun[i-1][otherWeight] + partyList.get(i-1).getFun();
-					}
+					partyFun[i][w] = Math.max(partyFun[i-1][w], partyFun[i-1][otherWeight] + partyList.get(i-1).getFun());
 				}
 			}
 		}
